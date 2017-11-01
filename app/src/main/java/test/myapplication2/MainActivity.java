@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         MyDBHelper db = new MyDBHelper(this);
         SQLiteDatabase mdb = db.getWritableDatabase();
         //create table
-        //TestDB(mdb, db);
+        TestDB(mdb, db);
         //test DB helper
 
         ArrayList<Item> list = db.DBgetAllData(mdb);
@@ -57,7 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         Cursor c = db.DBSelect(mdb, 2);
-        c.moveToNext();
+        System.out.println("SELECT");
+        db.DBShow(mdb, c);
+        /*c.moveToNext();
         int id = c.getInt(0);
         String name = c. getString(1);
         String address = c. getString(2);
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         String longitude = c.getString(4);
         System.out.println("SELECT");
         System.out.println( id + "|" + name + "|" + address + "|" + latitude + "|" + longitude);
+        */
 
     }
 

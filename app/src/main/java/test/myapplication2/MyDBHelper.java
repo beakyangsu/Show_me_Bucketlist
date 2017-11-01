@@ -101,4 +101,21 @@ public class MyDBHelper extends SQLiteOpenHelper {
         c.close();
     }
 
+    void DBShow(SQLiteDatabase db, Cursor c){
+
+        ArrayList<String> list = new ArrayList<>();
+
+        while(c.moveToNext()){
+            int id = c.getInt(0);
+            String name = c. getString(1);
+            String address = c. getString(2);
+            String latitude = c.getString(3);
+            String longitude = c.getString(4);
+
+            list.add(id + "|" + name + "|" + address + "|" + latitude + "|" + longitude + "\n");
+        }
+        System.out.println(list);
+        c.close();
+    }
+
 }
