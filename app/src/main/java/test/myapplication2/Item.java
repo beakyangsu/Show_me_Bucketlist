@@ -1,5 +1,8 @@
 package test.myapplication2;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by yangsu.baek on 2017-11-01.
  */

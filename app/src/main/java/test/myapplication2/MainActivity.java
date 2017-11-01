@@ -1,13 +1,16 @@
 package test.myapplication2;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,10 +25,22 @@ public class MainActivity extends AppCompatActivity {
         TestDB(mdb, db);
         //test DB helper
 
-        ArrayList<Item> list = db.DBgetAllData(mdb);
+        final ArrayList<Item> list = db.DBgetAllData(mdb);
         ListView listView = (ListView)findViewById(R.id.list);
         ListAdapter listAdapter = new ListAdapter(this, R.layout.list_item, list);
         listView.setAdapter(listAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra("position", position);
+                //intent.putExtra("data", (Parcelable) list.get(position));
+                //intent.putExtra("data",  list);
+
+                startActivity(intent);
+            }
+        });
 
     }
 
