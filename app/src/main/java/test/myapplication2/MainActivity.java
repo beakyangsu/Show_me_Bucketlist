@@ -2,8 +2,7 @@ package test.myapplication2;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Parcelable;
+import android.database.sqlite.SQLiteDatabase;;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         MyDBHelper db = new MyDBHelper(this);
         SQLiteDatabase mdb = db.getWritableDatabase();
         //create table
-        TestDB(mdb, db);
+        //TestDB(mdb, db);
         //test DB helper
 
         final ArrayList<Item> list = db.DBgetAllData(mdb);
@@ -34,9 +33,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                intent.putExtra("position", position);
-                //intent.putExtra("data", (Parcelable) list.get(position));
-                //intent.putExtra("data",  list);
+                intent.putExtra("data",list.get(position));
 
                 startActivity(intent);
             }
@@ -74,15 +71,6 @@ public class MainActivity extends AppCompatActivity {
         Cursor c = db.DBSelect(mdb, 2);
         System.out.println("SELECT");
         db.DBShow(mdb, c);
-        /*c.moveToNext();
-        int id = c.getInt(0);
-        String name = c. getString(1);
-        String address = c. getString(2);
-        String latitude = c.getString(3);
-        String longitude = c.getString(4);
-        System.out.println("SELECT");
-        System.out.println( id + "|" + name + "|" + address + "|" + latitude + "|" + longitude);
-        */
 
     }
 

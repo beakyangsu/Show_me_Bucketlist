@@ -21,11 +21,8 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         Intent receive = getIntent();
-        int position = receive.getIntExtra("position", 0);
-      // Item item =  receive.getParcelableExtra("data");
-        //ArrayList<Item> list =  receive.getParcelableExtra("data");
-        //Item item = list.get(position);
-        //setLayout(item);
+        Item item =  receive.getParcelableExtra("data");
+        setLayout(item);
 
     }
 

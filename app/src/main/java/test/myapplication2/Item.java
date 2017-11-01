@@ -7,12 +7,14 @@ import android.os.Parcelable;
  * Created by yangsu.baek on 2017-11-01.
  */
 
-public class Item {
+public class Item implements Parcelable{
     private int id;
     private String name;
     private String address;
     private String latitude;
     private String longitude;
+
+
 
     Item (){
 
@@ -30,6 +32,42 @@ public class Item {
         this.longitude = longitude;
 
     }
+
+    public int describeContents(){
+        return 0;
+    }
+
+    public Item(Parcel in) {
+        readFromParcel(in);
+    }
+
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(address);
+        dest.writeString(latitude);
+        dest.writeString(longitude);
+
+    }
+
+    private void readFromParcel(Parcel in){
+        id = in.readInt();
+        name = in.readString();
+        address = in.readString();
+        latitude = in.readString();
+        longitude = in.readString();
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Item createFromParcel(Parcel in) {
+            return new Item(in);
+        }
+
+        public Item[] newArray(int size) {
+            return new Item[size];
+        }
+    };
 
     public int getDBId(){
         return this.id;
