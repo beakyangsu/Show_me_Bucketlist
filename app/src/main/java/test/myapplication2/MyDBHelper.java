@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.v4.content.res.TypedArrayUtils;
+
 
 import java.util.ArrayList;
 
@@ -58,25 +58,47 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
     Cursor DBSelect(SQLiteDatabase db, int id){
         String _id = String.valueOf(id);
-        //return db.rawQuery("SELECT * FROM " + DB_TABLE + " WHERE _id = " + _id, null );
         return db.query(DB_TABLE, null, "_id=?", new String[]{_id}, null, null, null);
     }
 
-    ArrayList DBShow(SQLiteDatabase db){
+
+    ArrayList DBgetAllData(SQLiteDatabase db){
 
         Cursor c = db.query(DB_TABLE, null, null, null, null, null, null);
 
-        ArrayList<String> list = new ArrayList<>();
+       // ArrayList<String> list = new ArrayList<>();
+        ArrayList<Item> list = new ArrayList<>();
         while(c.moveToNext()){
             int id = c.getInt(0);
             String name = c. getString(1);
             String address = c. getString(2);
             String latitude = c.getString(3);
             String longitude = c.getString(4);
-            list.add(id + "|" + name + "|" + address + "|" + latitude + "|" + longitude + "\n");
+            Item item = new Item(id, name, address, latitude, longitude);
+            list.add(item);
+
         }
         c.close();
         return list;
+    }
+
+    void DBShow(SQLiteDatabase db){
+
+        Cursor c = db.query(DB_TABLE, null, null, null, null, null, null);
+
+        ArrayList<String> list = new ArrayList<>();
+
+        while(c.moveToNext()){
+            int id = c.getInt(0);
+            String name = c. getString(1);
+            String address = c. getString(2);
+            String latitude = c.getString(3);
+            String longitude = c.getString(4);
+
+            list.add(id + "|" + name + "|" + address + "|" + latitude + "|" + longitude + "\n");
+        }
+        System.out.println(list);
+        c.close();
     }
 
 }
