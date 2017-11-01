@@ -15,10 +15,10 @@ import java.util.ArrayList;
 
 public class MyDBHelper extends SQLiteOpenHelper {
 
-    public static final String DB_NAME = "DBList.db";
-    public static final String DB_TABLE = "DBList";
+    private static final String DB_NAME = "DBList.db";
+    private static final String DB_TABLE = "DBList";
 
-    public MyDBHelper(Context context){
+    MyDBHelper(Context context){
         super(context, DB_NAME, null, 1);
     }
 
@@ -31,7 +31,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean DBInsert(SQLiteDatabase db, String name, String address, String latitude, String longitude){
+    boolean DBInsert(SQLiteDatabase db, String name, String address, String latitude, String longitude){
 
         ContentValues value = new ContentValues();
 
@@ -40,20 +40,14 @@ public class MyDBHelper extends SQLiteOpenHelper {
         value.put("latitude", latitude);
         value.put("longitude", longitude);
 
-        if(db.insert(DB_TABLE,null, value)>0)
-            return true;
-        else
-            return false;
+        return db.insert(DB_TABLE, null, value) > 0;
     }
 
-    public boolean DBDelete(SQLiteDatabase db, Integer id ){
+    boolean DBDelete(SQLiteDatabase db, Integer id ){
         String _id = String.valueOf(id);
-        if(1 == db.delete(DB_TABLE,"_id=?", new String[]{_id}))
-            return true;
-        else
-            return false;
+        return 1 == db.delete(DB_TABLE, "_id=?", new String[]{_id});
     }
-    public void DBUpgrade(SQLiteDatabase db, int id, String key, String data){
+    void DBUpgrade(SQLiteDatabase db, int id, String key, String data){
 
         ContentValues value = new ContentValues();
         String _id = String.valueOf(id);
@@ -62,24 +56,24 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.execSQL("UPDATE " + DB_TABLE + " SET " + key + " = " + data + " WHERE _id = " + _id + ";");
     }
 
-    public Cursor DBSelect(SQLiteDatabase db, int id){
+    Cursor DBSelect(SQLiteDatabase db, int id){
         String _id = String.valueOf(id);
-        return db.rawQuery("SELECT * FROM " + DB_TABLE + " WHERE _id = " + _id, null );
-      //  return db.query(DB_TABLE, null, new String(_id), null, null, null, null);
+        //return db.rawQuery("SELECT * FROM " + DB_TABLE + " WHERE _id = " + _id, null );
+        return db.query(DB_TABLE, null, "_id=?", new String[]{_id}, null, null, null);
     }
 
-    public ArrayList DBShow(SQLiteDatabase db){
+    ArrayList DBShow(SQLiteDatabase db){
 
         Cursor c = db.query(DB_TABLE, null, null, null, null, null, null);
 
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
         while(c.moveToNext()){
             int id = c.getInt(0);
             String name = c. getString(1);
             String address = c. getString(2);
             String latitude = c.getString(3);
             String longitude = c.getString(4);
-            list.add(id + "|" + name + "|" + address + "|" + latitude + "|" + longitude);
+            list.add(id + "|" + name + "|" + address + "|" + latitude + "|" + longitude + "\n");
         }
         c.close();
         return list;

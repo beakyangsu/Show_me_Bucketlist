@@ -26,6 +26,13 @@ public class MainActivity extends AppCompatActivity {
         MyDBHelper db = new MyDBHelper(this);
         SQLiteDatabase mdb = db.getWritableDatabase();
         //create table
+        TestDB(mdb, db);
+        //test DB helper
+
+       // list.setAdapter(new IconAdapter(this));
+    }
+
+    public void TestDB(SQLiteDatabase mdb, MyDBHelper db){
 
         db.DBInsert(mdb,"2", "3", "4", "5");
         db.DBInsert(mdb,"9", "8", "7", "6");
@@ -44,22 +51,23 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("INSERT");
         System.out.println(list);
 
-        db.DBUpgrade(mdb,11, "name", "10");
+        db.DBUpgrade(mdb,2, "name", "10");
         list = db.DBShow(mdb);
         System.out.println("UPGRADE");
         System.out.println(list);
 
-        /*Cursor c = db.DBSelect(mdb, 2);
-        //int id = c.getInt(0);
+        Cursor c = db.DBSelect(mdb, 2);
+        c.moveToNext();
+        int id = c.getInt(0);
         String name = c. getString(1);
         String address = c. getString(2);
         String latitude = c.getString(3);
         String longitude = c.getString(4);
         System.out.println("SELECT");
-        System.out.println( "|" + name + "|" + address + "|" + latitude + "|" + longitude);
-*/
+        System.out.println( id + "|" + name + "|" + address + "|" + latitude + "|" + longitude);
 
-
-       // list.setAdapter(new IconAdapter(this));
     }
+
+
+
 }
