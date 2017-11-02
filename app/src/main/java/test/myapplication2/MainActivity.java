@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         final SQLiteDatabase mdb = db.getWritableDatabase();
 
         //create table
-        TestDB(mdb, db);
+        //TestDB(mdb, db);
         //test DB helper
 
         list = db.DBgetAllData(mdb);
@@ -83,10 +83,6 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i < list.size(); i++)
                     {
                         Item item = list.get(i);
-
-                     //   LayoutInflater factory = getLayoutInflater();
-                      //  View item_layout = factory.inflate(R.layout.list_item, null);
-                      //  CheckBox checkbox = (CheckBox)item_layout.findViewById(R.id.checkbox);
                         if (item.getIsCheck())
                         {
                             System.out.println("item posiition = " + i + ", item id = " + item.getDBId());
