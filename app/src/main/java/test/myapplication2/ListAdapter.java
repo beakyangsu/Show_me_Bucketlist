@@ -75,7 +75,7 @@ public class ListAdapter extends ArrayAdapter<Item> {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         item.setIsCheck(isChecked);
-                       // checkBox.setChecked(isChecked);
+                        checkBox.setChecked(isChecked);
                     }
                 });
 

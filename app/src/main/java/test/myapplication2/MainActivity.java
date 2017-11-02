@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if(!deleteButtonState){
                     setDeleteButtonState(true);
-                    for(int i = 0; i< list.size(); i++){
+                    for(int i = 0; i < list.size(); i++){
                         list.get(i).setShowCheck(true);
                     }
                     listAdapter.notifyDataSetChanged();
@@ -80,15 +80,19 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     setDeleteButtonState(false);
-                    for (int i = 0; i < list.size(); i++)
+                    int size = list.size();
+                    for (int i = 0; i < size ; )
                     {
                         Item item = list.get(i);
                         if (item.getIsCheck())
                         {
-                            System.out.println("item posiition = " + i + ", item id = " + item.getDBId());
+                            //System.out.println("item posiition = " + i + ", item id = " + item.getDBId());
                             db.DBDelete(mdb, item.getDBId());
                             list.remove(i);
+                            size--;
                         }
+                        else
+                            i++;
                     }
 
                     for(int i = 0; i< list.size(); i++){
