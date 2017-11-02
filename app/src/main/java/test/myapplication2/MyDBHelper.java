@@ -40,10 +40,11 @@ public class MyDBHelper extends SQLiteOpenHelper {
         value.put("latitude", latitude);
         value.put("longitude", longitude);
 
+
         return db.insert(DB_TABLE, null, value) > 0;
     }
 
-    boolean DBDelete(SQLiteDatabase db, Integer id ){
+    boolean DBDelete(SQLiteDatabase db, int id ){
         String _id = String.valueOf(id);
         return 1 == db.delete(DB_TABLE, "_id=?", new String[]{_id});
     }

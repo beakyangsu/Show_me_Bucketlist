@@ -13,6 +13,8 @@ public class Item implements Parcelable{
     private String address;
     private String latitude;
     private String longitude;
+    private boolean showCheck = false;
+    private boolean isCheck = false;
 
 
 
@@ -23,6 +25,7 @@ public class Item implements Parcelable{
         this.name = name;
         this.address = address;
     }
+
 
     Item(int id ,String name, String address, String latitude, String longitude){
         this.id = id;
@@ -88,6 +91,14 @@ public class Item implements Parcelable{
     public String getLongitude(){
         return this.longitude;
     }
+
+    public boolean getShowCheck(){ return this.showCheck; }
+
+    public boolean getIsCheck(){ return this.isCheck; }
+
+    public void setShowCheck(boolean check){ this.showCheck = check ;}
+
+    public void setIsCheck(boolean check){ this.isCheck = check ;}
 
     public void setName(String name){
         this.name = name;
