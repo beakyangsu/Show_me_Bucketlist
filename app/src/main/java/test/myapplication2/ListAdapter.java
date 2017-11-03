@@ -69,7 +69,7 @@ public class ListAdapter extends ArrayAdapter<Item> {
                     checkBox.setVisibility(View.VISIBLE);
                 }
 
-               checkBox.setChecked(item.getIsCheck());
+                checkBox.setChecked(item.getIsCheck());
 
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override

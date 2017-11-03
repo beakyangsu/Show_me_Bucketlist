@@ -1,12 +1,18 @@
 package test.myapplication2;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,14 +25,17 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
 
     ArrayList<Item> list;
     ListView listView;
     ListAdapter listAdapter;
-    private static boolean deleteButtonState = false;
 
+    MyDBHelper db;
+    SQLiteDatabase mdb;
+
+    private static boolean deleteButtonState = false;
 
 
     @Override
@@ -37,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
         Button register = (Button)findViewById(R.id.register);
         Button delete = (Button)findViewById(R.id.delete);
 
-        final MyDBHelper db = new MyDBHelper(this);
-        final SQLiteDatabase mdb = db.getWritableDatabase();
+        db = new MyDBHelper(this);
+        mdb = db.getWritableDatabase();
 
         //create table
-        //TestDB(mdb, db);
+        TestDB(mdb, db);
         //test DB helper
 
         list = db.DBgetAllData(mdb);
@@ -60,12 +69,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                // TODO Auto-generated method stub
+                final int position = pos;
+                new AlertDialog.Builder(MainActivity.this)
+                .setMessage(R.string.item_dialog)
+                .setPositiveButton(R.string.item_dialog_positive, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onDialogPositiveClick(position);
+
+                    }
+                }).setNegativeButton(R.string.item_dialog_negative, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onDialogNegativeClick(position);
+                    }
+                }).show();
+                return true;
+            }
+        });
+
         delete.setOnClickListener(new Button.OnClickListener(){
 
             public void onClick(View view) {
-
                // Toast.makeText (getApplicationContext(), new String("delete") , Toast.LENGTH_SHORT).show();
-
                 if(!deleteButtonState){
                     deleteButtonState = true;
                     showCeckbox();
@@ -75,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     deleteButtonState = false;
-                    deleteDB_and_list(db, mdb);
+                    deleteDB_and_list();
                     hideCheckbox();
                     listAdapter.notifyDataSetChanged();
                     Toast.makeText (getApplicationContext(), new String("delete  0") , Toast.LENGTH_SHORT).show();
@@ -101,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    public void deleteDB_and_list(MyDBHelper db, SQLiteDatabase mdb){
+    public void deleteDB_and_list(/*MyDBHelper db, SQLiteDatabase mdb*/){
 
         int size = list.size();
         for (int i = 0; i < size ; )
@@ -129,6 +159,26 @@ public class MainActivity extends AppCompatActivity {
             this.finish();
     }
 
+    public void onDialogPositiveClick(int position) {
+
+        //intent to upgrade activity with DBid data
+
+        //In the new Activity :
+        //show original name and address data on textView
+        //user can modify name and address
+        //DBupgrade, list upgrade
+
+    }
+
+    public void onDialogNegativeClick(int position) {
+        //deleteDB, LIST
+
+        Item item = list.get(position);
+        db.DBDelete(mdb, item.getDBId());
+        list.remove(position);
+        listAdapter.notifyDataSetChanged();
+        Toast.makeText (getApplicationContext(), new String("Dialog : delete" + position) , Toast.LENGTH_SHORT).show();
+    }
 
     public void TestDB(SQLiteDatabase mdb, MyDBHelper db){
 
@@ -163,4 +213,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
 }
+
+
