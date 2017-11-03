@@ -1,10 +1,12 @@
 package test.myapplication2;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Item> list;
     ListView listView;
     ListAdapter listAdapter;
-    private boolean deleteButtonState = false;
+    private static boolean deleteButtonState = false;
 
 
 
@@ -65,39 +67,16 @@ public class MainActivity extends AppCompatActivity {
                // Toast.makeText (getApplicationContext(), new String("delete") , Toast.LENGTH_SHORT).show();
 
                 if(!deleteButtonState){
-                    setDeleteButtonState(true);
-                    for(int i = 0; i < list.size(); i++){
-                        list.get(i).setShowCheck(true);
-                    }
+                    deleteButtonState = true;
+                    showCeckbox();
                     listAdapter.notifyDataSetChanged();
-                    // will only be executed after the first run.
-                    // remember that it was initialized
                     Toast.makeText (getApplicationContext(), new String("delete  1") , Toast.LENGTH_SHORT).show();
 
-
-
-                    // put you code which should only be run once here ..
                 }
                 else {
-                    setDeleteButtonState(false);
-                    int size = list.size();
-                    for (int i = 0; i < size ; )
-                    {
-                        Item item = list.get(i);
-                        if (item.getIsCheck())
-                        {
-                            //System.out.println("item posiition = " + i + ", item id = " + item.getDBId());
-                            db.DBDelete(mdb, item.getDBId());
-                            list.remove(i);
-                            size--;
-                        }
-                        else
-                            i++;
-                    }
-
-                    for(int i = 0; i< list.size(); i++){
-                        list.get(i).setShowCheck(false);
-                    }
+                    deleteButtonState = false;
+                    deleteDB_and_list(db, mdb);
+                    hideCheckbox();
                     listAdapter.notifyDataSetChanged();
                     Toast.makeText (getApplicationContext(), new String("delete  0") , Toast.LENGTH_SHORT).show();
                 }
@@ -107,13 +86,49 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void setDeleteButtonState(boolean b){
-        deleteButtonState = b;
+
+    public void showCeckbox(){
+
+        for(int i = 0; i < list.size(); i++){
+            list.get(i).setShowCheck(true);
+        }
     }
 
-    public boolean getDeleteButtonState(){
-        return deleteButtonState;
+    public void hideCheckbox(){
+
+        for(int i = 0; i< list.size(); i++){
+            list.get(i).setShowCheck(false);
+        }
+
     }
+    public void deleteDB_and_list(MyDBHelper db, SQLiteDatabase mdb){
+
+        int size = list.size();
+        for (int i = 0; i < size ; )
+        {
+            Item item = list.get(i);
+            if (item.getIsCheck())
+            {
+                //System.out.println("item posiition = " + i + ", item id = " + item.getDBId());
+                db.DBDelete(mdb, item.getDBId());
+                list.remove(i);
+                size--;
+            }
+            else
+                i++;
+        }
+    }
+
+    public void onBackPressed(){
+        if(deleteButtonState){
+            deleteButtonState = false;
+            hideCheckbox();
+            listAdapter.notifyDataSetChanged();
+        }
+        else
+            this.finish();
+    }
+
 
     public void TestDB(SQLiteDatabase mdb, MyDBHelper db){
 
