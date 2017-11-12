@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -31,11 +33,23 @@ public class DetailActivity extends AppCompatActivity {
             TextView name = (TextView) findViewById(R.id.name);
             TextView address = (TextView) findViewById(R.id.address);
 
-            if(name != null)
-                name.setText(item.getName());
+            WebView mWebView = (WebView)findViewById(R.id.webview);
+            String url = item.getUrl();
+            if(mWebView != null && url != null) {
+                mWebView.setWebViewClient(new WebViewClient());
+                mWebView.clearCache(true);
+                mWebView.clearHistory();
+                mWebView.getSettings().setJavaScriptEnabled(true);
+                mWebView.loadUrl(url);
+            }
 
+            String itemName = item.getName();
+            if(name != null && itemName != null)
+                name.setText("name : " + itemName);
+
+            String itemAddress = item.getAddress();
             if(address != null)
-                address.setText(item.getAddress());
+                address.setText("address : " + itemAddress);
         }
     }
 }

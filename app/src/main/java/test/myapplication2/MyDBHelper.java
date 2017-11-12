@@ -19,7 +19,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
     private static final String DB_TABLE = "DBList";
 
     MyDBHelper(Context context){
-        super(context, DB_NAME, null, 1);
+        super(context, DB_NAME, null, 2);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
@@ -27,11 +27,11 @@ public class MyDBHelper extends SQLiteOpenHelper {
             onCreate(db);
     }
     public void onCreate(SQLiteDatabase db){
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + DB_TABLE + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, address TEXT, latitude TEXT, longitude TEXT);");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + DB_TABLE + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, address TEXT, latitude TEXT, longitude TEXT, url TEXT);");
 
     }
 
-    boolean DBInsert(SQLiteDatabase db, String name, String address, String latitude, String longitude){
+    boolean DBInsert(SQLiteDatabase db, String name, String address, String latitude, String longitude, String url){
 
         ContentValues value = new ContentValues();
 
@@ -39,6 +39,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
         value.put("address", address);
         value.put("latitude", latitude);
         value.put("longitude", longitude);
+        value.put("url", url);
 
 
         return db.insert(DB_TABLE, null, value) > 0;
@@ -75,7 +76,8 @@ public class MyDBHelper extends SQLiteOpenHelper {
             String address = c. getString(2);
             String latitude = c.getString(3);
             String longitude = c.getString(4);
-            Item item = new Item(id, name, address, latitude, longitude);
+            String url = c.getString(5);
+            Item item = new Item(id, name, address, latitude, longitude, url);
             list.add(item);
 
         }
@@ -95,8 +97,8 @@ public class MyDBHelper extends SQLiteOpenHelper {
             String address = c. getString(2);
             String latitude = c.getString(3);
             String longitude = c.getString(4);
-
-            list.add(id + "|" + name + "|" + address + "|" + latitude + "|" + longitude + "\n");
+            String url = c.getString(5);
+            list.add(id + "|" + name + "|" + address + "|" + latitude + "|" + longitude +  "|" + url+ "\n");
         }
         System.out.println(list);
         c.close();
@@ -112,8 +114,8 @@ public class MyDBHelper extends SQLiteOpenHelper {
             String address = c. getString(2);
             String latitude = c.getString(3);
             String longitude = c.getString(4);
-
-            list.add(id + "|" + name + "|" + address + "|" + latitude + "|" + longitude + "\n");
+            String url = c.getString(5);
+            list.add(id + "|" + name + "|" + address + "|" + latitude + "|" + longitude +  "|" + url+ "\n");
         }
         System.out.println(list);
         c.close();

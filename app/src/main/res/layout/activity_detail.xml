@@ -1,19 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:weightSum="5"
     android:layout_height="match_parent">
 
 
     <TextView
         android:id="@+id/name"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </TextView>
 
     <TextView
         android:id="@+id/address"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </TextView>
+
+    <WebView
+        android:id="@+id/webview"
+        android:layout_weight="2"
+        android:layout_width="fill_parent"
+        android:layout_height="400dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/update"
+            android:layout_marginRight="2dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:text="수정" />
+
+        <Button
+            android:id="@+id/delete"
+            android:layout_marginLeft="2dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:text="삭제" />
+    </LinearLayout>
 
 </LinearLayout>

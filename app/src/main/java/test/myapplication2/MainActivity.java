@@ -33,14 +33,25 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button register = (Button)findViewById(R.id.register);
-        Button delete = (Button)findViewById(R.id.delete);
-
         db = new MyDBHelper(this);
         mdb = db.getWritableDatabase();
 
+        Intent receive = getIntent();
+        if(receive != null) {
+            Item item = receive.getParcelableExtra("data");
+            if (item != null) {
+                if (!db.DBInsert(mdb, item.getName(), item.getAddress(), item.getLatitude(), item.getLongitude(), item.getUrl()))
+                    System.out.println("검색 등록 DBInsert 실패");
+            }
+        }
+
+        Button register = (Button)findViewById(R.id.register);
+        Button delete = (Button)findViewById(R.id.delete);
+
+
+
         //create table
-        TestDB(mdb, db);
+        //TestDB(mdb, db);
         //test DB helper
 
         list = db.DBgetAllData(mdb);
@@ -83,6 +94,15 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+        register.setOnClickListener(new Button.OnClickListener(){
+
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         delete.setOnClickListener(new Button.OnClickListener(){
 
             public void onClick(View view) {
@@ -105,6 +125,8 @@ public class MainActivity extends AppCompatActivity{
 
             }
         });
+
+
 
     }
 
@@ -171,8 +193,8 @@ public class MainActivity extends AppCompatActivity{
     public void TestDB(SQLiteDatabase mdb, MyDBHelper db){
         // TODO for testing DB
 
-        db.DBInsert(mdb,"2", "3", "4", "5");
-        db.DBInsert(mdb,"9", "8", "7", "6");
+        db.DBInsert(mdb,"2", "3", "4", "5", "6");
+        db.DBInsert(mdb,"9", "8", "7", "6", "8");
 
         System.out.println("INSERT");
         db.DBShow(mdb);
@@ -184,7 +206,7 @@ public class MainActivity extends AppCompatActivity{
         db.DBShow(mdb);
 
 
-        db.DBInsert(mdb,"2", "3", "4", "5");
+        db.DBInsert(mdb,"2", "3", "4", "5", "20");
 
         System.out.println("INSERT");
         db.DBShow(mdb);
